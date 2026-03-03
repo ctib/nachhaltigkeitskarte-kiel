@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GTASnP – Kartenansicht</title>
+  <meta name="robots" content="noindex, nofollow">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+
+  <!-- Supabase-Credentials -->
+  <meta name="supabase-url" content="https://kwwyyuqwrkgyyaxnaipe.supabase.co">
+  <meta name="supabase-anon-key" content="sb_publishable_eapfujf9HCWaFhMLZmQaVQ_FvcBiDnD">
+
+  <!-- Leaflet CSS (lokal) -->
+  <link rel="stylesheet" href="vendor/leaflet.css">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/map.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="header-left">
+      <h1 class="site-title">GTASnP</h1>
+      <span class="site-subtitle">Karte der Geschichte und Theorie der Architektur, der Stadt und der Nachhaltigen Planung</span>
+      <nav class="header-meta">
+        <a href="https://www.haw-kiel.de/studium/studienangebot/architektur/architektur-ba/inhalte-des-studiums/" target="_blank" rel="noopener">B.A. Architektur</a>
+        <span class="meta-sep">&middot;</span>
+        <a href="https://www.haw-kiel.de/person/nikolaus-knebel-1/" target="_blank" rel="noopener">Prof. Nikolaus Knebel</a>
+        <span class="meta-sep">&amp;</span>
+        <a href="https://www.haw-kiel.de/person/christoph-goebel-1/" target="_blank" rel="noopener">Prof. Christoph Göbel</a>
+        <span class="meta-sep">&middot;</span>
+        <a href="#" id="logout-link">Abmelden</a>
+      </nav>
+    </div>
+    <a href="https://www.haw-kiel.de" target="_blank" rel="noopener" class="header-logo-link">
+      <img src="assets/haw-logo.svg" alt="HAW Kiel" class="logo">
+    </a>
+  </header>
+
+  <!-- Karte -->
+  <div id="map"></div>
+
+  <!-- Status-Meldung -->
+  <div id="load-status">Karte wird geladen …</div>
+
+  <!-- Datenschutz-Hinweis -->
+  <div class="privacy-notice" id="privacy-notice">
+    <span>
+      Diese Karte lädt Kartenkacheln von
+      <a href="https://operations.osmfoundation.org/policies/tiles/" target="_blank" rel="noopener">OpenStreetMap</a>.
+      Dabei wird Ihre IP-Adresse an die OSM-Server übermittelt.
+      Es werden keine Cookies gesetzt und keine weiteren Daten erhoben.
+    </span>
+    <button onclick="document.getElementById('privacy-notice').classList.add('hidden')">Verstanden</button>
+  </div>
+
+  <!-- Leaflet JS (lokal) -->
+  <script src="vendor/leaflet.js"></script>
+
+  <!-- Supabase JS (lokal) -->
+  <script src="vendor/supabase.min.js"></script>
+
+  <!-- Auth-Check + App -->
+  <script src="js/auth.js"></script>
+  <script type="module" src="js/map.js"></script>
+
+</body>
+</html>

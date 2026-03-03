@@ -3,37 +3,30 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GTASnP – Karte der Geschichte und Theorie der Architektur, der Stadt und der Nachhaltigen Planung</title>
+  <title>GTASnP – Geschichte und Theorie der Architektur, der Stadt und der Nachhaltigen Planung</title>
   <meta name="description" content="Interaktive Karte nachhaltiger und architekturhistorisch bedeutsamer Gebäude in Kiel – HAW Kiel, B.A. Architektur">
   <meta name="robots" content="noindex, nofollow">
 
-  <!-- Favicon (HAW-Winkelzeichen) -->
+  <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
 
-  <!-- Supabase-Credentials (Anon Key ist öffentlich – RLS schützt die Daten) -->
-  <meta name="supabase-url" content="https://xxxxxxxxxxxx.supabase.co">
-  <meta name="supabase-anon-key" content="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.placeholder">
-
-  <!-- Leaflet CSS (lokal, kein CDN) -->
-  <link rel="stylesheet" href="vendor/leaflet.css">
-
-  <!-- Eigene Styles -->
+  <!-- Styles -->
   <link rel="stylesheet" href="css/main.css">
-  <link rel="stylesheet" href="css/map.css">
+  <link rel="stylesheet" href="css/landing.css">
 </head>
-<body>
+<body class="landing-page">
 
   <!-- Header -->
   <header class="site-header">
     <div class="header-left">
       <h1 class="site-title">GTASnP</h1>
-      <span class="site-subtitle">Karte der Geschichte und Theorie der Architektur, der Stadt und der Nachhaltigen Planung</span>
+      <span class="site-subtitle">Geschichte und Theorie der Architektur, der Stadt und der Nachhaltigen Planung</span>
       <nav class="header-meta">
         <a href="https://www.haw-kiel.de/studium/studienangebot/architektur/architektur-ba/inhalte-des-studiums/" target="_blank" rel="noopener">B.A. Architektur</a>
         <span class="meta-sep">&middot;</span>
-        <a href="https://www.haw-kiel.de/en/person/nikolaus-knebel-1/" target="_blank" rel="noopener">Prof. Nikolaus Knebel</a>
+        <a href="https://www.haw-kiel.de/person/nikolaus-knebel-1/" target="_blank" rel="noopener">Prof. Nikolaus Knebel</a>
         <span class="meta-sep">&amp;</span>
-        <a href="https://www.haw-kiel.de/en/person/christoph-goebel-1/" target="_blank" rel="noopener">Prof. Christoph Göbel</a>
+        <a href="https://www.haw-kiel.de/person/christoph-goebel-1/" target="_blank" rel="noopener">Prof. Christoph Göbel</a>
       </nav>
     </div>
     <a href="https://www.haw-kiel.de" target="_blank" rel="noopener" class="header-logo-link">
@@ -41,31 +34,92 @@
     </a>
   </header>
 
-  <!-- Karte -->
-  <div id="map"></div>
+  <main class="landing-main">
 
-  <!-- Status-Meldung -->
-  <div id="load-status">Karte wird geladen …</div>
+    <!-- Intro -->
+    <section class="landing-intro">
+      <p>
+        Diese interaktive Karte dokumentiert architekturhistorisch und nachhaltigkeitsrelevant
+        bedeutsame Gebäude in Kiel. Sie entsteht als semesterübergreifendes Lehrprojekt im
+        Studiengang <strong>B.A. Architektur (Artek)</strong> an der
+        <a href="https://www.haw-kiel.de" target="_blank" rel="noopener">HAW Kiel</a>.
+      </p>
+    </section>
 
-  <!-- Datenschutz-Hinweis (DSGVO) -->
-  <div class="privacy-notice" id="privacy-notice">
-    <span>
-      Diese Karte lädt Kartenkacheln von
-      <a href="https://operations.osmfoundation.org/policies/tiles/" target="_blank" rel="noopener">OpenStreetMap</a>.
-      Dabei wird Ihre IP-Adresse an die OSM-Server übermittelt.
-      Es werden keine Cookies gesetzt und keine weiteren Daten erhoben.
-    </span>
-    <button onclick="document.getElementById('privacy-notice').classList.add('hidden')">Verstanden</button>
-  </div>
+    <!-- Module -->
+    <section class="module-cards">
 
-  <!-- Leaflet JS (lokal) -->
-  <script src="vendor/leaflet.js"></script>
+      <article class="module-card module-gtas">
+        <div class="module-badge badge-blau">1. &amp; 7. Sem.</div>
+        <h2>Geschichte und Theorie der Architektur und Stadt</h2>
+        <p class="module-id">Module 21600 (I) &amp; 25600 (II) &middot; Prof. Nikolaus Knebel</p>
+        <p>
+          Einführung in die Ideengeschichte von Architektur und Stadt – von der Antike bis
+          zum 21. Jahrhundert. Anhand internationaler, nationaler, regionaler und lokaler
+          Fallbeispiele werden Querverbindungen zu gesellschaftspolitischen, kunsthistorischen
+          und technikgeschichtlichen Entwicklungen hergestellt.
+        </p>
+        <ul class="module-details">
+          <li>Pflichtmodul, 4 SWS, 5 LP</li>
+          <li>Prüfung: Hausarbeit</li>
+          <li>Lehrvortrag, Wintersemester</li>
+        </ul>
+      </article>
 
-  <!-- Supabase JS (lokal) -->
+      <article class="module-card module-nplan">
+        <div class="module-badge badge-gruen">6. Sem.</div>
+        <h2>Geschichte und Theorie des nachhaltigen Planens</h2>
+        <p class="module-id">Modul 27210 &middot; Prof. Dr.-Ing. Christoph Göbel</p>
+        <p>
+          Historische Entwicklung des Nachhaltigkeitsdiskurses von der Vormoderne bis heute.
+          Theoretische Standpunkte aus ökologischer, ökonomischer und sozialer Perspektive,
+          verdeutlicht anhand konkreter Gebäude und Planungsbeispiele.
+          Die Studierenden analysieren und bewerten komplexe Systeme aus
+          Gebäuden und technischen Anlagen unter Nachhaltigkeitsaspekten.
+        </p>
+        <ul class="module-details">
+          <li>Wahlpflicht, Schwerpunkt Green Building, 4 SWS, 5 LP</li>
+          <li>Prüfung: Portfolioprüfung</li>
+          <li>Lehrvortrag + Übung, Sommersemester</li>
+        </ul>
+      </article>
+
+    </section>
+
+    <!-- Zugangsschranke -->
+    <section class="login-section">
+      <h2>Zur Karte</h2>
+      <p class="login-hint">
+        Die Zugangsdaten werden im Kurs ausgegeben.
+      </p>
+      <form class="login-form" id="login-form">
+        <div class="form-field">
+          <label for="login-user">Zugangsname</label>
+          <input type="text" id="login-user" name="user" autocomplete="username" required>
+        </div>
+        <div class="form-field">
+          <label for="login-pass">Passwort</label>
+          <input type="password" id="login-pass" name="pass" autocomplete="current-password" required>
+        </div>
+        <div class="login-error hidden" id="login-error">
+          Zugangsname oder Passwort falsch.
+        </div>
+        <button type="submit" class="btn-primary">Karte öffnen</button>
+      </form>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="landing-footer">
+    <p>
+      Lehrprojekt im Rahmen des Studiengangs B.A. Architektur (Artek), HAW Kiel.
+    </p>
+  </footer>
+
+  <!-- Supabase JS (lokal, für Auth) -->
   <script src="vendor/supabase.min.js"></script>
-
-  <!-- App -->
-  <script type="module" src="js/map.js"></script>
+  <script src="js/auth.js"></script>
 
 </body>
 </html>
