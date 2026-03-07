@@ -20,7 +20,7 @@ Jede Kohorte trägt pro Semester mind. 1 Gebäude mit vollständiger Dokumentati
 
 ## Funktionale Anforderungen
 
-### Kartenansicht (öffentlich)
+### Kartenansicht (nach Anmeldung)
 - Interaktive Karte von Kiel auf Basis von **Leaflet.js + OpenStreetMap-Kacheln**
 - Gebäude als **Marker** mit Farbcodierung nach Herkunftsmodul (grün = Modul 27210 / blau = Sem-1-Modul)
 - **Popup** pro Marker mit:
@@ -29,8 +29,9 @@ Jede Kohorte trägt pro Semester mind. 1 Gebäude mit vollständiger Dokumentati
   - Performanceparameter (kW Heizlast, MWh Wärmebedarf, Embodied Carbon, Carbon Footprint)
   - Thumbnail des A4-Flyers (verlinkt auf PDF-Download)
   - Semester / Kohorte
-- **Filterleiste**: nach Modul, Semester, Nachhaltigkeitskategorie (ökologisch / ökonomisch / sozial)
-- **Suchfeld**: Gebäudename oder Adresse
+- **Legende** mit Layer-Toggles (Module ein-/ausblenden)
+- **Exkursions-Trails** als gestrichelte Polylines auf der Karte
+- **Detail-Sidebar** mit Langbeschreibung, Performance-Tabelle, Modul-Info und Flyer-Download
 - Vollständig **responsiv** (Desktop + Tablet + Mobile)
 
 ### Flyer-Vorlage (Download)
@@ -78,6 +79,8 @@ und Lehrende langfristig wartbar und verständlich bleiben.
 - **Self-Hosted Vendor-Libs** – Leaflet.js und Supabase.js liegen im `/vendor/`-Ordner, kein CDN-Load
 - **OSM-Kacheln**: Einzige externe Datenübermittlung – Kartenkacheln werden von `tile.openstreetmap.org` geladen (IP-Adresse wird übermittelt). Hinweis wird dem Nutzer angezeigt.
 - **Supabase**: Gebäudedaten werden von Supabase geladen (Anon Key, öffentlich lesbar, RLS-geschützt)
+- **Content Security Policy** – CSP-Meta-Tags in beiden HTML-Dateien (kein Inline-Script, nur `self` + OSM + Supabase)
+- **Referrer-Policy** – `strict-origin-when-cross-origin` verhindert Referer-Leaks an Dritte
 
 ### Corporate Design
 
@@ -93,20 +96,17 @@ Gestaltung orientiert sich am **CD-Manual der HAW Kiel** (Stand 12/2025):
 ```
 nachhaltigkeitskarte-kiel/
 │
-├── index.html                  # Einstiegspunkt – Kartenansicht
-├── upload.html                 # Upload-Formular für Studierende (v1.1)
-├── admin.html                  # Admin-Panel (v1.2)
+├── index.html                  # Landing Page mit Login-Formular
+├── map.html                    # Kartenansicht (nach Anmeldung)
 │
 ├── css/
 │   ├── main.css                # Globale Styles, Custom Properties, HAW-CD-Farben
-│   ├── map.css                 # Kartenspezifische Styles, Marker, Popups, Legende
-│   ├── upload.css              # Formular-Styles (v1.1)
-│   └── admin.css               # Admin-Styles (v1.2)
+│   ├── landing.css             # Styles für Landing Page
+│   └── map.css                 # Kartenspezifische Styles, Marker, Popups, Legende
 │
 ├── js/
-│   ├── map.js                  # Leaflet-Init, Marker, Popup, Legende
-│   ├── upload.js               # Upload-Formular-Logik (v1.1)
-│   ├── admin.js                # Admin-Panel-Logik (v1.2)
+│   ├── auth.js                 # Supabase-Auth: Login, Session-Check, Logout
+│   ├── map.js                  # Leaflet-Init, Marker, Popup, Sidebar, Legende
 │   └── supabase-client.js      # Supabase-Client (liest Credentials aus <meta>-Tags)
 │
 ├── vendor/                     # Self-hosted Libs (DSGVO: kein CDN)
@@ -116,7 +116,8 @@ nachhaltigkeitskarte-kiel/
 │   └── images/                 # Leaflet-UI-Assets (marker, layers)
 │
 ├── data/
-│   └── gebaeude.geojson        # Freigegebene Gebäude (Fallback / Backup)
+│   ├── seed-gtas1.sql          # Seed-Daten Gesch. & Theorie I
+│   └── update-beschreibungen.sql  # Gebäude-Beschreibungen aus Fallstudien
 │
 ├── templates/
 │   ├── flyer-gruen-A4.pdf      # Druckvorlage Modul 27210 (grün)
@@ -227,14 +228,12 @@ SUPABASE_SERVICE_KEY=eyJ...    # Nur Admin-Panel – niemals ins Frontend-Bundle
 git clone https://github.com/ctib/nachhaltigkeitskarte-kiel.git
 cd nachhaltigkeitskarte-kiel
 
-cp .env.example .env.local
-# → SUPABASE_URL und SUPABASE_ANON_KEY eintragen
-
 npx serve .
 # → http://localhost:3000
 ```
 
 Kein Build-Step nötig – reiner statischer Vanilla-Stack.
+Supabase-Credentials stehen direkt in den HTML-Meta-Tags (`<meta name="supabase-url">` / `<meta name="supabase-anon-key">`), keine `.env`-Datei erforderlich.
 
 ---
 
@@ -257,10 +256,10 @@ Row-Level-Security schützt die Daten. Der `SERVICE_KEY` bleibt immer lokal.
 
 ## Roadmap
 
-- [x] v1.0 · Kartenansicht · Leaflet + OSM · Marker aus Supabase · Popup mit Performanceparametern
+- [x] v1.0 · Kartenansicht mit Auth, Legende, Exkursions-Trails, Detail-Sidebar, CSP
 - [ ] v1.1 · Upload-Formular · Supabase Insert · Koordinaten-Picker
 - [ ] v1.2 · Admin-Panel · Freigabe-Workflow
-- [ ] v1.3 · Filter + Suche · Farbcodierung nach Modul
+- [ ] v1.3 · Filter + Suche
 - [ ] v1.4 · Flyer-Template-Download (beide Farbvarianten)
 - [ ] v2.0 · GeoJSON-Export / Backup via GitHub Action
 - [ ] v2.1 · Erweiterung auf weitere Module / Kohorten
