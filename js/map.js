@@ -15,6 +15,10 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   maxZoom: 19
 }).addTo(map);
 
+// ── Layer-Gruppen für Module ─────────────────────────────────────────
+const layerNachhaltig  = L.layerGroup().addTo(map);
+const layerGeschTheorie = L.layerGroup().addTo(map);
+
 // ── Exkursions-Trails ───────────────────────────────────────────────
 // Tag 1 (12.12.): Fördetower → Sartori & Berger → IHK → Werkstatthaus Muthesius
 //   → Arbeitsamt → KirchenKai → [Pause] → Wohnstift → Europaplatz → [Bus] → St. Lukas
@@ -66,28 +70,39 @@ legend.onAdd = function () {
   L.DomEvent.disableClickPropagation(div);
 
   div.innerHTML = `
-    <h4>Module</h4>
-    <div class="legend-item"><span class="legend-dot gruen"></span> Nachhaltiges Planen</div>
-    <div class="legend-item"><span class="legend-dot blau"></span> Gesch. & Theorie I</div>
-    <h4 class="legend-trail-heading">Exkursionen</h4>
-    <label class="legend-item legend-trail-item">
+    <h4>WiSe 2025/26</h4>
+    <label class="legend-item legend-toggle-item">
+      <input type="checkbox" id="layer-nachhaltig" checked>
+      <span class="legend-dot gruen"></span>
+      Nachhaltiges Planen
+    </label>
+    <label class="legend-item legend-toggle-item">
+      <input type="checkbox" id="layer-geschtheorie" checked>
+      <span class="legend-dot blau"></span>
+      Gesch. &amp; Theorie I
+    </label>
+    <label class="legend-item legend-toggle-item">
       <input type="checkbox" id="trail1-toggle">
       <span class="legend-trail" style="border-color: #D67B19"></span>
       Exkursion 12.12.
     </label>
-    <label class="legend-item legend-trail-item">
+    <label class="legend-item legend-toggle-item">
       <input type="checkbox" id="trail2-toggle">
       <span class="legend-trail" style="border-color: #85C3DF"></span>
       Exkursion 19.12.
     </label>
   `;
 
-  div.querySelector('#trail1-toggle').addEventListener('change', function () {
-    this.checked ? map.addLayer(trail1Line) : map.removeLayer(trail1Line);
-  });
-  div.querySelector('#trail2-toggle').addEventListener('change', function () {
-    this.checked ? map.addLayer(trail2Line) : map.removeLayer(trail2Line);
-  });
+  function bindToggle(id, layer) {
+    div.querySelector(id).addEventListener('change', function () {
+      this.checked ? map.addLayer(layer) : map.removeLayer(layer);
+    });
+  }
+
+  bindToggle('#layer-nachhaltig', layerNachhaltig);
+  bindToggle('#layer-geschtheorie', layerGeschTheorie);
+  bindToggle('#trail1-toggle', trail1Line);
+  bindToggle('#trail2-toggle', trail2Line);
 
   return div;
 };
@@ -289,8 +304,9 @@ async function loadGebaeude() {
 
   data.forEach(g => {
     const icon = markerIcons[g.modul] || markerIcons['27210'];
+    const targetLayer = g.modul === 'GeschTheorie1' ? layerGeschTheorie : layerNachhaltig;
     const marker = L.marker([g.lat, g.lng], { icon })
-      .addTo(map)
+      .addTo(targetLayer)
       .bindPopup(createPopupContent(g), { maxWidth: 260 });
 
     // Delegate click on "Details →" inside popup

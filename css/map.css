@@ -133,15 +133,11 @@
 .legend-dot.gruen { background: var(--color-modul-27210); }
 .legend-dot.blau  { background: var(--color-modul-sem1); }
 
-.legend-trail-heading {
-  margin-top: 0.5rem;
-}
-
-.legend-trail-item {
+.legend-toggle-item {
   cursor: pointer;
 }
 
-.legend-trail-item input[type="checkbox"] {
+.legend-toggle-item input[type="checkbox"] {
   width: 13px;
   height: 13px;
   margin: 0;
