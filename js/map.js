@@ -94,12 +94,13 @@ function buildSidebarHTML(g) {
     parts.push(`<span class="stil-badge ${badgeClass}">${g.stil}</span>`);
   }
 
-  // Beschreibung
-  if (g.bewertung_kurz) {
+  // Beschreibung (lang) oder Kurztext als Fallback
+  const beschreibungsText = g.beschreibung || g.bewertung_kurz;
+  if (beschreibungsText) {
     parts.push(`
       <div class="sidebar-section">
         <div class="sidebar-section-title">Beschreibung</div>
-        <p class="sidebar-description">${g.bewertung_kurz}</p>
+        <p class="sidebar-description">${beschreibungsText}</p>
       </div>
     `);
   }
