@@ -4,6 +4,17 @@
 
 import { supabase } from './supabase-client.js';
 
+// ── HTML-Escaping (XSS-Schutz) ─────────────────────────────────────
+function esc(str) {
+  if (!str) return '';
+  return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+// ── Privacy-Dismiss ─────────────────────────────────────────────────
+document.getElementById('privacy-dismiss')?.addEventListener('click', function () {
+  document.getElementById('privacy-notice').classList.add('hidden');
+});
+
 // ── Leaflet: Image-Pfad auf vendor/ setzen ─────────────────────────
 L.Icon.Default.imagePath = 'vendor/images/';
 
@@ -134,21 +145,21 @@ function createPopupContent(g) {
   const badgeClass = g.modul === '27210' ? 'modul-27210' : 'modul-sem1';
 
   const stilBadge = g.stil
-    ? `<span class="stil-badge ${badgeClass}">${g.stil}</span><br>`
+    ? `<span class="stil-badge ${badgeClass}">${esc(g.stil)}</span><br>`
     : '';
 
   const architekt = g.architekt
-    ? `<p class="popup-architekt">Arch.: ${g.architekt}</p>`
+    ? `<p class="popup-architekt">Arch.: ${esc(g.architekt)}</p>`
     : '';
 
   const kurztext = g.bewertung_kurz
-    ? `<p class="popup-kurztext">${g.bewertung_kurz}</p>`
+    ? `<p class="popup-kurztext">${esc(g.bewertung_kurz)}</p>`
     : '';
 
   return `
     <div class="popup-content">
-      <h3 class="popup-title">${g.name}</h3>
-      <p class="popup-address">${g.adresse}${g.baujahr ? ` &middot; ${g.baujahr}` : ''}</p>
+      <h3 class="popup-title">${esc(g.name)}</h3>
+      <p class="popup-address">${esc(g.adresse)}${g.baujahr ? ` &middot; ${g.baujahr}` : ''}</p>
       ${architekt}
       ${stilBadge}
       ${kurztext}
@@ -163,20 +174,20 @@ function buildSidebarHTML(g) {
 
   // Thumbnail
   if (g.thumbnail_url) {
-    parts.push(`<img class="sidebar-thumbnail" src="${g.thumbnail_url}" alt="${g.name}">`);
+    parts.push(`<img class="sidebar-thumbnail" src="${g.thumbnail_url}" alt="${esc(g.name)}">`);
   }
 
   // Titel + Adresse + Architekt
-  parts.push(`<h2 class="sidebar-title">${g.name}</h2>`);
-  parts.push(`<p class="sidebar-address">${g.adresse}${g.baujahr ? ` &middot; ${g.baujahr}` : ''}</p>`);
+  parts.push(`<h2 class="sidebar-title">${esc(g.name)}</h2>`);
+  parts.push(`<p class="sidebar-address">${esc(g.adresse)}${g.baujahr ? ` &middot; ${g.baujahr}` : ''}</p>`);
   if (g.architekt) {
-    parts.push(`<p class="sidebar-architekt">${g.architekt}</p>`);
+    parts.push(`<p class="sidebar-architekt">${esc(g.architekt)}</p>`);
   }
 
   // Stil-Badge
   if (g.stil) {
     const badgeClass = g.modul === '27210' ? 'modul-27210' : 'modul-sem1';
-    parts.push(`<span class="stil-badge ${badgeClass}">${g.stil}</span>`);
+    parts.push(`<span class="stil-badge ${badgeClass}">${esc(g.stil)}</span>`);
   }
 
   // Beschreibung (lang) oder Kurztext als Fallback
@@ -185,7 +196,7 @@ function buildSidebarHTML(g) {
     parts.push(`
       <div class="sidebar-section">
         <div class="sidebar-section-title">Beschreibung</div>
-        <p class="sidebar-description">${beschreibungsText}</p>
+        <p class="sidebar-description">${esc(beschreibungsText)}</p>
       </div>
     `);
   }
@@ -228,7 +239,7 @@ function buildSidebarHTML(g) {
     parts.push(`
       <div class="sidebar-section">
         <div class="sidebar-section-title">Bearbeitet von</div>
-        <p class="sidebar-autoren">${g.autoren}</p>
+        <p class="sidebar-autoren">${esc(g.autoren)}</p>
       </div>
     `);
   }

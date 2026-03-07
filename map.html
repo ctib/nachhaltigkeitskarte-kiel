@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Karte der Geschichte und Theorie der Architektur, der Stadt und der nachhaltigen Planung</title>
   <meta name="robots" content="noindex, nofollow">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; connect-src 'self' https://kwwyyuqwrkgyyaxnaipe.supabase.co; img-src 'self' https://*.tile.openstreetmap.org data:; style-src 'self' 'unsafe-inline'; script-src 'self'; frame-src 'none'; object-src 'none'">
 
   <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
@@ -55,7 +58,7 @@
       Dabei wird Ihre IP-Adresse an die OSM-Server übermittelt.
       Es werden keine Cookies gesetzt und keine weiteren Daten erhoben.
     </span>
-    <button onclick="document.getElementById('privacy-notice').classList.add('hidden')">Verstanden</button>
+    <button id="privacy-dismiss">Verstanden</button>
   </div>
 
   <!-- Detail-Sidebar -->
