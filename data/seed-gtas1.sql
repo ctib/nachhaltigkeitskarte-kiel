@@ -1,16 +1,65 @@
 -- ============================================================
--- GTAS1 WiSe 2025/26 – Seed-Daten
--- Geschichte & Theorie der Architektur und Stadt I
+-- GTAS1 WiSe 2025/26 – Komplettes Setup
+-- Tabelle anlegen + Seed-Daten einfügen
 -- ============================================================
 
--- 1. Schema-Erweiterung: drei neue Felder
--- (Idempotent – kann mehrfach ausgeführt werden)
-ALTER TABLE gebaeude ADD COLUMN IF NOT EXISTS architekt text;
-ALTER TABLE gebaeude ADD COLUMN IF NOT EXISTS stil text;
-ALTER TABLE gebaeude ADD COLUMN IF NOT EXISTS autoren text;
+-- 1. Tabelle anlegen (aus README-Schema + neue Felder)
+CREATE TABLE IF NOT EXISTS gebaeude (
+  id               uuid primary key default gen_random_uuid(),
+  created_at       timestamptz default now(),
 
--- 2. Gebäudedaten einfügen
+  -- Inhalt
+  name             text not null,
+  adresse          text not null,
+  lat              float8 not null,
+  lng              float8 not null,
+  baujahr          int,
+  beschreibung     text,
+  bewertung_kurz   text,
+
+  -- Performanceparameter
+  heizlast_kw      float8,
+  waermebedarf_mwh float8,
+  embodied_carbon  float8,
+  carbon_footprint float8,
+
+  -- Klassifikation
+  modul            text check (modul in ('27210', 'GeschTheorie1')),
+  semester         text,
+  kategorie        text[],
+
+  -- Assets
+  flyer_url        text,
+  thumbnail_url    text,
+
+  -- Workflow
+  status           text default 'pending' check (status in ('pending', 'approved', 'rejected')),
+  dozent_notiz     text,
+
+  -- Neue Felder (Infobox-Template)
+  architekt        text,
+  stil             text,
+  autoren          text
+);
+
+-- 2. Row Level Security
+ALTER TABLE gebaeude ENABLE ROW LEVEL SECURITY;
+
+-- Öffentlich lesbar: nur approved
+CREATE POLICY "public_read" ON gebaeude
+  FOR SELECT USING (status = 'approved');
+
+-- Jeder darf inserieren (Upload-Formular ohne Login)
+CREATE POLICY "public_insert" ON gebaeude
+  FOR INSERT WITH CHECK (status = 'pending');
+
+-- 3. RLS kurz deaktivieren für Seed-Insert mit status='approved'
+ALTER TABLE gebaeude DISABLE ROW LEVEL SECURITY;
+
+-- ============================================================
+-- 4. Gebäudedaten einfügen
 -- Quelle: Exkursionspläne 12.12. + 19.12.2025, Fallstudien-PDFs
+-- ============================================================
 
 -- FS01 – Altes Arbeitsamt (Stephan-Heinzel-Haus)
 INSERT INTO gebaeude (name, adresse, lat, lng, baujahr, architekt, stil, bewertung_kurz, modul, semester, autoren, status)
@@ -264,3 +313,6 @@ VALUES (
   'Lina Matthiesen, Carolin Struve',
   'approved'
 );
+
+-- 5. RLS wieder aktivieren
+ALTER TABLE gebaeude ENABLE ROW LEVEL SECURITY;
