@@ -1,5 +1,5 @@
-# Nachhaltigkeitskarte Kiel
-### Interaktive Karte nachhaltiger Gebäude in Kiel
+# Karte der Geschichte und Theorie der nachhaltigen Planung
+### Interaktive Karte nachhaltigkeitsrelevanter Gebäude in Kiel
 **Hochschule für Angewandte Wissenschaften Kiel · Fachbereich Medien / Bauwesen**
 **B.A. Architektur · Schwerpunkt Green Building**
 
@@ -7,14 +7,11 @@
 
 ## Projektkontext
 
-Diese Webanwendung ist das semesterübergreifende Portfolio-Produkt zweier Lehrveranstaltungen im Schwerpunkt Green Building:
-
-| Modul | Semester | Beitrag zur Karte |
-|---|---|---|
-| **Geschichte & Theorie des nachhaltigen Planens** (27210) | 6. Sem. (SoSe) | Gebäudebewertung + A4-Flyer (grüne Farbwelt) |
-| **Geschichte & Theorie der Architektur und Stadt I** | 1. Sem. (WiSe) | Gebäudebewertung + A4-Flyer (blaue Farbwelt) |
+Diese Webanwendung ist ein semesterübergreifendes Lehrprojekt im Modul **Geschichte und Theorie des nachhaltigen Planens** (27210, 6. Sem., SoSe) von Prof. Dr.-Ing. Christoph Göbel.
 
 Jede Kohorte trägt pro Semester mind. 1 Gebäude mit vollständiger Dokumentation bei. Die Karte wächst damit kontinuierlich und wird zum lebendigen Stadtarchiv nachhaltiger Kieler Architektur.
+
+> **Hinweis:** Das Modul Gesch. & Theorie der Architektur und Stadt I (Prof. Knebel) war WiSe 2025/26 beteiligt, ist aber aktuell nicht aktiv. Daten sind archiviert unter `data/archive/`.
 
 ---
 
@@ -22,21 +19,20 @@ Jede Kohorte trägt pro Semester mind. 1 Gebäude mit vollständiger Dokumentati
 
 ### Kartenansicht (nach Anmeldung)
 - Interaktive Karte von Kiel auf Basis von **Leaflet.js + OpenStreetMap-Kacheln**
-- Gebäude als **Marker** mit Farbcodierung nach Herkunftsmodul (grün = Modul 27210 / blau = Sem-1-Modul)
+- Gebäude als **Marker** (grün, Modul 27210)
 - **Popup** pro Marker mit:
   - Gebäudename, Adresse, Jahr
   - Kurztext Nachhaltigkeitsbewertung
   - Performanceparameter (kW Heizlast, MWh Wärmebedarf, Embodied Carbon, Carbon Footprint)
   - Thumbnail des A4-Flyers (verlinkt auf PDF-Download)
   - Semester / Kohorte
-- **Legende** mit Layer-Toggles (Module ein-/ausblenden)
-- **Exkursions-Trails** als gestrichelte Polylines auf der Karte
+- **Legende** mit Layer-Toggle (Modul ein-/ausblenden)
 - **Detail-Sidebar** mit Langbeschreibung, Performance-Tabelle, Modul-Info und Flyer-Download
 - Vollständig **responsiv** (Desktop + Tablet + Mobile)
 
 ### Flyer-Vorlage (Download)
 - A4-Doppelseite als Druckvorlage (PDF + Quelldatei)
-- Zwei Farbvarianten: **Grün** (Modul 27210) · **Blau** (Sem-1-Modul)
+- Farbvariante **Grün** (Modul 27210)
 - Einheitliches Layout gemäß bestehendem Template (siehe `/templates/`)
 
 ### Upload-Workflow (Studierende)
@@ -87,14 +83,14 @@ und Lehrende langfristig wartbar und verständlich bleiben.
 Gestaltung orientiert sich am **CD-Manual der HAW Kiel** (Stand 12/2025):
 - Markenfarbe **HAW-Blau** (`#00305D`) im Header
 - **Verdana** als Ersatz-/Systemschrift (Hausschrift ITC Officina ist lizenzpflichtig)
-- Modulfarben Grün (`#2D6A4F`) und Blau (`#1F4E79`) für Marker-Unterscheidung
+- Modulfarbe Grün (`#2D6A4F`) für Marker
 
 ---
 
 ## Projektstruktur
 
 ```
-nachhaltigkeitskarte-kiel/
+GTdnP/
 │
 ├── index.html                  # Landing Page mit Login-Formular
 ├── map.html                    # Kartenansicht (nach Anmeldung)
@@ -116,16 +112,18 @@ nachhaltigkeitskarte-kiel/
 │   └── images/                 # Leaflet-UI-Assets (marker, layers)
 │
 ├── data/
-│   ├── seed-gtas1.sql          # Seed-Daten Gesch. & Theorie I
-│   └── update-beschreibungen.sql  # Gebäude-Beschreibungen aus Fallstudien
+│   ├── seed-ibsh.sql           # Seed-Daten IB.SH Kiel
+│   ├── remove-geschtheorie1.sql  # GeschTheorie1-Gebäude deaktivieren
+│   └── archive/                # Archivierte SQL-Seeds (ehem. GeschTheorie1)
+│       ├── seed-gtas1.sql
+│       └── update-beschreibungen.sql
 │
 ├── templates/
 │   ├── flyer-gruen-A4.pdf      # Druckvorlage Modul 27210 (grün)
-│   ├── flyer-blau-A4.pdf       # Druckvorlage Sem-1-Modul (blau)
 │   └── flyer-source/           # Quelldateien
 │
 ├── assets/
-│   ├── icons/                  # Marker-Icons (grün / blau / pending)
+│   ├── icons/                  # Marker-Icons
 │   └── haw-logo.svg
 │
 ├── .env.example                # Supabase URL + Anon Key (nie committen!)
@@ -210,7 +208,7 @@ SUPABASE_SERVICE_KEY=eyJ...    # Nur Admin-Panel – niemals ins Frontend-Bundle
 --color-modul-27210:        #2D6A4F;   /* Dunkelgrün */
 --color-modul-27210-light:  #D8F3DC;   /* Hellgrün */
 
-/* Sem-1-Modul – Geschichte & Theorie der Architektur und Stadt I */
+/* Sem-1-Modul – archiviert (ehem. Gesch. & Theorie der Architektur und Stadt I) */
 --color-modul-sem1:         #1F4E79;   /* HAW-Dunkelblau */
 --color-modul-sem1-light:   #D6E4F0;   /* Hellblau */
 
@@ -225,8 +223,8 @@ SUPABASE_SERVICE_KEY=eyJ...    # Nur Admin-Panel – niemals ins Frontend-Bundle
 ## Lokale Entwicklung
 
 ```bash
-git clone https://github.com/ctib/nachhaltigkeitskarte-kiel.git
-cd nachhaltigkeitskarte-kiel
+git clone https://github.com/ctib/GTdnP.git
+cd GTdnP
 
 npx serve .
 # → http://localhost:3000
@@ -244,7 +242,7 @@ GitHub Pages auf Branch `main` / Root aktivieren:
 
 ```bash
 git add .
-git commit -m "feat: neues Gebäude KW26 SoSe2026"
+git commit -m "feat: neues Gebäude SoSe2026"
 git push origin main
 # Seite aktualisiert sich automatisch
 ```
@@ -256,11 +254,11 @@ Row-Level-Security schützt die Daten. Der `SERVICE_KEY` bleibt immer lokal.
 
 ## Roadmap
 
-- [x] v1.0 · Kartenansicht mit Auth, Legende, Exkursions-Trails, Detail-Sidebar, CSP
+- [x] v1.0 · Kartenansicht mit Auth, Legende, Detail-Sidebar, CSP
 - [ ] v1.1 · Upload-Formular · Supabase Insert · Koordinaten-Picker
 - [ ] v1.2 · Admin-Panel · Freigabe-Workflow
 - [ ] v1.3 · Filter + Suche
-- [ ] v1.4 · Flyer-Template-Download (beide Farbvarianten)
+- [ ] v1.4 · Flyer-Template-Download
 - [ ] v2.0 · GeoJSON-Export / Backup via GitHub Action
 - [ ] v2.1 · Erweiterung auf weitere Module / Kohorten
 
